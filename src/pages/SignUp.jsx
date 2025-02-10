@@ -1,9 +1,65 @@
-import React from "react";
+import React, { useContext, useRef, useState } from "react";
 import { Link } from "react-router";
+import { AUthfirebase } from "../Auth/AuthApi";
+import { useNavigate } from "react-router-dom";
+import toast, { Toaster } from "react-hot-toast";
 
 function SignUp() {
+  const navigate = useNavigate();
+  const [selectedFile, setSelectedFile] = useState(null);
+  const [isDragActive, setIsDragActive] = useState(false);
+  const { GoogleLogIN, CreateUser } = useContext(AUthfirebase);
+
+  const handleFileChange = async (e) => {
+    e.preventDefault();
+
+    const form = e.target;
+    const email = form.email.value;
+    const name = form.name.value;
+    const phone = form.phone.value;
+    const password = form.password.value;
+    const confirmPassword = form.confirmPassword.value;
+
+    if (password !== confirmPassword) {
+      toast.error("Passwords do not match!");
+
+      return;
+    }
+
+    if (!selectedFile) {
+      toast.error("Please select an Img!");
+      return;
+    }
+
+    const formData = new FormData();
+    formData.append("image", selectedFile);
+
+    try {
+      const response = await fetch(
+        `https://api.imgbb.com/1/upload?key=${import.meta.env.VITE_IMG_API}`,
+        { method: "POST", body: formData }
+      );
+
+      const data = await response.json();
+      if (!data.success) toast.error("Image upload failed");
+
+      const user = await CreateUser(email, password, name, data?.data?.url);
+      if (user) toast.success("Log In successfully");
+
+      navigate("/");
+    } catch (error) {
+      toast.error(error.message);
+    }
+  };
+
+  const HandleGoogleLogIn = () => {
+    GoogleLogIN().then(() => {
+      navigate("/");
+    });
+  };
   return (
     <section className="text-black bg-gray-100">
+      <Toaster />
       <div className=" flex justify-between lg:gap-15 p-10 w-10/12 mx-auto items-center">
         <div>
           <button className="btn text-black bg-transparent border-none hover:text-purple-500 hover:shadow-md shadow-md hover:shadow-purple-700">
@@ -24,9 +80,7 @@ function SignUp() {
         </div>
       </div>
 
-      <div className="  lg:flex w-10/12 mx-auto lg:p-10 justify-around gap-5 ">
-        {/* form */}
-
+      <div className="  min-h-screen lg:flex w-10/12 mx-auto lg:p-10 justify-around gap-5 ">
         <div className="lg:w-1/2 card bg-white shadow-sm">
           <figure>
             <img
@@ -40,20 +94,23 @@ function SignUp() {
               Create Your Account
             </h2>
 
-            <form onSubmit={"HandleSignup"}>
+            {/* form */}
+            <form onSubmit={handleFileChange}>
+              {/* name */}
               <div className="form-control w-full">
                 <label className="label">
                   <span className="label-text">Full Name</span>
                 </label>
                 <input
                   type="text"
-                  placeholder="John Doe"
+                  placeholder="Re Chowdhury"
                   className="input input-bordered w-full bg-white border-2 border-gray-100 mt-2"
                   required
                   name="name"
                 />
               </div>
-
+              {/* name */}
+              {/* email */}{" "}
               <div className="form-control w-full mt-4">
                 <label className="label">
                   <span className="label-text">Email</span>
@@ -66,33 +123,113 @@ function SignUp() {
                   name="email"
                 />
               </div>
-
+              {/* email */}
+              {/* phone number */}{" "}
               <div className="form-control w-full mt-4">
                 <label className="label">
                   <span className="label-text">Phone Number</span>
                 </label>
                 <input
                   type="tel"
-                  placeholder="+1 234 567 890"
+                  placeholder="+880 "
                   className="input input-bordered w-full bg-white border-2 border-gray-100 mt-2"
                   pattern="[+]{0,1}[0-9]{7,15}"
                   required
                   name="phone"
                 />
               </div>
-
+              {/* phone number */}
+              {/* img */}
               <div className="form-control w-full mt-4">
                 <label className="label">
                   <span className="label-text">Profile Image</span>
                 </label>
-                <input
-                  type="file"
-                  className="file-input file-input-bordered w-full"
-                  accept="image/*"
-                  name="image"
-                />
-              </div>
 
+                <div
+                  className={`border-2 border-dashed rounded-lg p-6 text-center transition-colors${
+                    isDragActive
+                      ? "border-purple-500 bg-purple-50"
+                      : "border-base-300 hover:border-purple-300"
+                  }`}
+                  onDragOver={(e) => {
+                    e.preventDefault();
+                    setIsDragActive(true);
+                  }}
+                  onDragLeave={() => setIsDragActive(false)}
+                  onDrop={(e) => {
+                    e.preventDefault();
+                    setIsDragActive(false);
+                    const file = e.dataTransfer.files[0];
+                    if (file && file.type.startsWith("image/")) {
+                      setSelectedFile(file);
+                    }
+                  }}
+                >
+                  <input
+                    type="file"
+                    className="hidden"
+                    id="file-upload"
+                    accept="image/*"
+                    onChange={(e) => {
+                      const file = e.target.files[0];
+                      if (file) setSelectedFile(file);
+                    }}
+                  />
+
+                  <div className="flex flex-col items-center justify-center gap-3">
+                    <svg
+                      xmlns="http://www.w3.org/2000/svg"
+                      className="w-12 h-12 text-purple-500"
+                      fill="none"
+                      viewBox="0 0 24 24"
+                      stroke="currentColor"
+                    >
+                      <path
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                        strokeWidth="2"
+                        d="M7 16a4 4 0 01-.88-7.903A5 5 0 1115.9 6L16 6a5 5 0 011 9.9M15 13l-3-3m0 0l-3 3m3-3v12"
+                      />
+                    </svg>
+
+                    <div className="space-y-1">
+                      <p className="font-medium">
+                        {selectedFile
+                          ? selectedFile.name
+                          : "Drag and drop your photo here"}
+                      </p>
+                      <p className="text-sm text-gray-500">
+                        {selectedFile
+                          ? "Click to change photo"
+                          : "or click to browse (JPEG, PNG, WEBP)"}
+                      </p>
+                    </div>
+
+                    <button
+                      type="button"
+                      className="btn btn-sm btn-outline border-purple-500 text-purple-500 hover:bg-purple-500 hover:text-white"
+                      onClick={() => {
+                        const fileInput =
+                          document.getElementById("file-upload");
+                        if (fileInput) fileInput.click();
+                      }}
+                    >
+                      Choose File
+                    </button>
+                  </div>
+
+                  {selectedFile && (
+                    <div className="mt-4">
+                      <img
+                        src={URL.createObjectURL(selectedFile)}
+                        alt="Preview"
+                        className="mx-auto h-32 w-32 rounded-full object-cover border-2 border-purple-200"
+                      />
+                    </div>
+                  )}
+                </div>
+              </div>
+              {/* img */}
               <div className="form-control w-full mt-4">
                 <label className="label">
                   <span className="label-text">Password</span>
@@ -105,7 +242,6 @@ function SignUp() {
                   name="password"
                 />
               </div>
-
               <div className="form-control w-full mt-4">
                 <label className="label">
                   <span className="label-text">Confirm Password</span>
@@ -118,7 +254,6 @@ function SignUp() {
                   name="confirmPassword"
                 />
               </div>
-
               <div className="card-actions flex-col mt-6">
                 <button
                   type="submit"
@@ -130,8 +265,8 @@ function SignUp() {
                 <div className="divider">OR</div>
 
                 <button
+                  onClick={HandleGoogleLogIn}
                   type="button"
-                  onClick={"HandleGoogleLogIn"}
                   className="btn btn-outline w-full gap-2"
                 >
                   <svg
@@ -158,8 +293,8 @@ function SignUp() {
           </div>
         </div>
         {/*     form */}
-        <div className="lg:w-1/2 text-purple-950 lg:p-8 text-center lg:text-6xl lg:my-auto text-2xl mb-5">
-          <h1>Welcome back to Found It</h1>
+        <div className="lg:w-1/2 text-purple-950 lg:p-8 text-center lg:text-6xl lg:my-20 p-2">
+          <h1>Join Us in Reuniting Lost Items with Their Owners!</h1>
         </div>
       </div>
     </section>

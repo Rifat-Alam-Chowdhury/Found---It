@@ -1,9 +1,12 @@
 import { useContext, useState } from "react";
 import { Link } from "react-router";
 import { AUthfirebase } from "../Auth/AuthApi";
+import toast, { Toaster } from "react-hot-toast";
 
 function Login() {
   const { GoogleLogIN, LogIn } = useContext(AUthfirebase);
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
 
   const HandelLogin = (e) => {
     e.preventDefault();
@@ -14,18 +17,26 @@ function Login() {
 
     LogIn(email, password)
       .then((userCredential) => {
+        toast.success("Log in successfully");
         navigate("/");
       })
-      .catch((err) => console.log(err));
+      .catch((err) => toast.error(err.message));
   };
   const HandleGoogleLogIn = () => {
     GoogleLogIN().then(() => {
+      toast.success("Log in successfully");
       navigate("/");
     });
+  };
+  const handleRecruiterAutoFill = () => {
+    toast.success("Hello");
+    setEmail("rifatalamtabs@gmail.com");
+    setPassword("Re*1010*1#");
   };
   return (
     <>
       <section className="text-black bg-gray-100">
+        <Toaster />
         <div className=" flex justify-between lg:gap-15 p-10 w-10/12 mx-auto items-center">
           <div>
             <button className="btn text-black bg-transparent border-none hover:text-purple-600 hover:shadow-md hover:shadow-purple-700">
@@ -51,7 +62,7 @@ function Login() {
             <h1>Welcome back to Found It</h1>
           </div>
 
-          <div className="lg:w-1/2 card bg-white shadow-sm">
+          <div className="lg:w-1/2 card bg-white shadow-sm border-2 ">
             <figure>
               <img
                 src="https://cdn-icons-png.flaticon.com/512/5087/5087579.png"
@@ -59,6 +70,12 @@ function Login() {
                 className="h-30 object-contain"
               />
             </figure>
+            <button
+              onClick={handleRecruiterAutoFill}
+              className="btn btn-xs w-7/12 mx-auto p-2 bg-black text-white rounded-xl"
+            >
+              Only if you are a requiter click here
+            </button>
             <div className="card-body">
               <h2 className="card-title justify-center text-2xl mb-4">
                 Login to Your Account
@@ -75,6 +92,8 @@ function Login() {
                     className="input input-bordered w-full bg-white border-2 border-gray-100"
                     required
                     name="email"
+                    value={email}
+                    onChange={(e) => setEmail(e.target.value)}
                   />
                 </div>
 
@@ -88,6 +107,8 @@ function Login() {
                     className="input input-bordered w-full  bg-white border-2 border-gray-100"
                     required
                     name="password"
+                    value={password}
+                    onChange={(e) => setPassword(e.target.value)}
                   />
                 </div>
 
