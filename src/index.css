@@ -1,3 +1,6 @@
 @import "tailwindcss";
 @import "tailwindcss";
 @plugin "daisyui";
+.skeleton-custom {
+  background-color: #fd6244 !important; /* Gold color, change as needed */
+}

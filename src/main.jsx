@@ -4,11 +4,12 @@ import "./index.css";
 import App from "./App.jsx";
 import { BrowserRouter, RouterProvider } from "react-router";
 import router from "./Router.jsx";
+import AuthApi from "./Auth/AuthApi.jsx";
 
 createRoot(document.getElementById("root")).render(
-  <StrictMode>
+  <AuthApi>
     <RouterProvider router={router}>
       <App />
     </RouterProvider>
-  </StrictMode>
+  </AuthApi>
 );
