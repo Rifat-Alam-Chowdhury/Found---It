@@ -2,6 +2,8 @@ import React, { useEffect, useRef, useState } from "react";
 import { Swiper, SwiperSlide } from "swiper/react";
 import "swiper/css";
 import { Autoplay, Pagination, Navigation } from "swiper/modules";
+import SpotlightCard from "../../components/SpotlightCard";
+import StarBorder from "../../components/StarBorder";
 
 function Home() {
   const progressCircle = useRef(null);
@@ -32,6 +34,7 @@ function Home() {
   return (
     <>
       <div className="  bg-transparent    w-11/12  mx-auto">
+        {/* banner */}
         <div className="">
           <h1 className="text-xl ml-6 font-bold mb-1 text-color">
             Top Priority
@@ -49,7 +52,7 @@ function Home() {
             navigation={true}
             modules={[Autoplay, Pagination, Navigation]}
             onAutoplayTimeLeft={onAutoplayTimeLeft}
-            className="mySwiper border-2 rounded-lg"
+            className="mySwiper  rounded-lg"
             style={{
               height: "500px",
             }}
@@ -84,6 +87,73 @@ function Home() {
               <span ref={progressContent}></span>
             </div>
           </Swiper>
+        </div>
+        {/* banner */}
+
+        {/* ***********
+         *
+         *
+         * *
+         * *
+         * *
+         * *
+         * **
+         * * */}
+        <div>
+          {/* recenlost */}
+          <section className=" text-color mt-4">
+            <div className=" p-2 rounded-md bg-white">
+              <h1 className="font-semibold ml-2">Just Now</h1>
+              <div className=" lg:grid lg:grid-cols-3 gap-3">
+                {posts?.map((recent, index) => (
+                  <>
+                    <div
+                      key={index}
+                      className=" lg:hidden   flex items-center p-2 mb-2 border-b border-gray-400"
+                    >
+                      <div className="flex-1">
+                        <h1 className="mb-1">{recent.name}</h1>{" "}
+                        <p>{recent.item}</p>
+                      </div>
+
+                      <div className="flex-shrink-0 ml-4">
+                        <img
+                          src={recent.img}
+                          alt={recent.item}
+                          className="w-16 h-16 object-cover rounded-2xl"
+                        />
+                      </div>
+                    </div>
+
+                    <SpotlightCard className="hidden border-none  lg:block bg-white relative overflow-hidden">
+                      <figure className="relative w-full  ">
+                        <img
+                          src={recent.img}
+                          alt={recent.item}
+                          className=" h-40 w-full object-cover rounded-md"
+                        />
+                      </figure>
+                      <div className=" p-4 h-1/2 flex flex-col">
+                        <h2 className="card-title text-lg">{recent.name}</h2>
+                        <p className="text-sm line-clamp-3 mb-2">
+                          {recent.item}
+                        </p>
+                        <div className="card-actions mt-auto">
+                          <button className=" border-b-2  px-2 text-color hover:bg-purple-300 hover:text-white transition-all duration-300 ease-in-out rounded-md">
+                            View more
+                          </button>
+                        </div>
+                      </div>
+                    </SpotlightCard>
+                  </>
+                ))}
+              </div>
+              <div className="text-center cursor-pointer  hover:scale-125 bg-purple-100 rounded-xl  w-25 mx-auto border-b px-2 transition-transform duration-300 ease-in-out">
+                View More
+              </div>
+            </div>
+          </section>
+          {/* recenlost */}
         </div>
       </div>
     </>
