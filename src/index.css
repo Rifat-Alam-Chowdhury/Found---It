@@ -4,3 +4,12 @@
 .skeleton-custom {
   background-color: #fd6244 !important; /* Gold color, change as needed */
 }
+
+.text-color {
+  color: theme("colors.purple.950");
+}
+
+.open-sans {
+  font-family: "Open Sans", serif;
+  font-optical-sizing: auto;
+}

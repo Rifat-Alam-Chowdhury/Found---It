@@ -1,5 +1,5 @@
 import { useContext, useState } from "react";
-import { Link } from "react-router";
+import { Link, useNavigate } from "react-router";
 import { AUthfirebase } from "../Auth/AuthApi";
 import toast, { Toaster } from "react-hot-toast";
 
@@ -7,6 +7,7 @@ function Login() {
   const { GoogleLogIN, LogIn } = useContext(AUthfirebase);
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const navigate = useNavigate();
 
   const HandelLogin = (e) => {
     e.preventDefault();
@@ -39,9 +40,12 @@ function Login() {
         <Toaster />
         <div className=" flex justify-between lg:gap-15 p-10 w-10/12 mx-auto items-center">
           <div>
-            <button className="btn text-black bg-transparent border-none hover:text-purple-600 hover:shadow-md hover:shadow-purple-700">
-              Found It
-            </button>
+            <Link to={"/"}>
+              {" "}
+              <button className="btn text-black bg-transparent border-none hover:text-purple-600 hover:shadow-md hover:shadow-purple-700">
+                Found It
+              </button>
+            </Link>
           </div>
           <div className="flex lg:gap-20 md:gap-16 ">
             <Link className="hover:text-purple-600 " to={"/"}>
@@ -62,7 +66,7 @@ function Login() {
             <h1>Welcome back to Found It</h1>
           </div>
 
-          <div className="lg:w-1/2 card bg-white shadow-sm border-2 ">
+          <div className="lg:w-1/2 card bg-white shadow-sm  ">
             <figure>
               <img
                 src="https://cdn-icons-png.flaticon.com/512/5087/5087579.png"
