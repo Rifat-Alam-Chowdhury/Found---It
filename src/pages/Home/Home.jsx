@@ -3,7 +3,6 @@ import { Swiper, SwiperSlide } from "swiper/react";
 import "swiper/css";
 import { Autoplay, Pagination, Navigation } from "swiper/modules";
 import SpotlightCard from "../../components/SpotlightCard";
-import StarBorder from "../../components/StarBorder";
 import Community from "../../components/Community";
 import About from "../About/About";
 
@@ -16,18 +15,10 @@ function Home() {
   };
 
   const [posts, setPosts] = useState([]);
-
-  const categories = [
-    { name: "Electronics", icon: "📱" },
-    { name: "Personal Accessories & Documents", icon: "💼" },
-    { name: "Bags & Backpacks", icon: "🎒" },
-    { name: "Clothing & Accessories", icon: "👕" },
-    { name: "Jewelry & Watches", icon: "⌚" },
-    { name: "Miscellaneous Items", icon: "📦" },
-  ];
+  const [categories, setcategories] = useState([]);
 
   useEffect(() => {
-    const fetchData = async () => {
+    const fetchBannerData = async () => {
       try {
         const response = await fetch("/Banner.json");
         const data = await response.json();
@@ -36,11 +27,19 @@ function Home() {
         console.error("Error fetching data:", error);
       }
     };
+    const fetchCategories = async () => {
+      try {
+        const response = await fetch("/categories.json");
+        const data = await response.json();
+        setcategories(data);
+      } catch (error) {
+        console.error("Error fetching data:", error);
+      }
+    };
 
-    fetchData();
+    fetchBannerData();
+    fetchCategories();
   }, []);
-
-  console.log(posts);
 
   return (
     <>

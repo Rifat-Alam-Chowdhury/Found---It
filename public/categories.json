@@ -1,0 +1,26 @@
+[
+  {
+    "name": "Electronics",
+    "icon": "📱"
+  },
+  {
+    "name": "Personal Accessories & Documents",
+    "icon": "💼"
+  },
+  {
+    "name": "Bags & Backpacks",
+    "icon": "🎒"
+  },
+  {
+    "name": "Clothing & Accessories",
+    "icon": "👕"
+  },
+  {
+    "name": "Jewelry & Watches",
+    "icon": "⌚"
+  },
+  {
+    "name": "Miscellaneous Items",
+    "icon": "📦"
+  }
+]

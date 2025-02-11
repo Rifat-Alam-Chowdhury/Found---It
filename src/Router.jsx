@@ -8,6 +8,9 @@ import Post from "./pages/Post/Post";
 import Profile from "./pages/Profile/Profile";
 import About from "./pages/About/About";
 import Private from "./pages/Private";
+import EditProfile from "./pages/Edit/EditProfile";
+import Mypost from "./pages/Mypost/Mypost";
+import CreatePost from "./pages/CreatePost/CreatePost";
 
 const router = createBrowserRouter([
   {
@@ -26,6 +29,28 @@ const router = createBrowserRouter([
       },
 
       { path: "/About", element: <About /> },
+      {
+        path: "/Profile",
+        element: (
+          <Private>
+            <Profile />
+          </Private>
+        ),
+        children: [
+          {
+            path: "edit",
+            element: <EditProfile />,
+          },
+          {
+            path: "mypost",
+            element: <Mypost />,
+          },
+          {
+            path: "CreatePost",
+            element: <CreatePost />,
+          },
+        ],
+      },
     ],
   },
   {
@@ -35,10 +60,6 @@ const router = createBrowserRouter([
   {
     path: "signup",
     element: <SignUp />,
-  },
-  {
-    path: "/Profile",
-    element: <Profile />,
   },
 ]);
 

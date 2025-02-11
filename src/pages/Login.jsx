@@ -76,7 +76,7 @@ function Login() {
             </figure>
             <button
               onClick={handleRecruiterAutoFill}
-              className="btn btn-xs w-7/12 mx-auto p-2 bg-black text-white rounded-xl"
+              className="btn btn-xs w-8/12 mx-auto p-2 bg-black text-white rounded-xl"
             >
               Only if you are a recruiter click here
             </button>
