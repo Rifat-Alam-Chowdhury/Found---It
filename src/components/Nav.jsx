@@ -14,13 +14,19 @@ function Nav() {
       >
         Home
       </Link>
-      <Link className="text-color   lg:mb-0 mb-5 hover:bg-purple-200 lg:hover:scale-125 font-semibold lg:hover:bg-transparent rounded-2xl hover:text-white ">
+      <Link
+        to={"/find"}
+        className="text-color   lg:mb-0 mb-5 hover:bg-purple-200 lg:hover:scale-125 font-semibold lg:hover:bg-transparent rounded-2xl hover:text-white "
+      >
         Find
       </Link>
 
       {user && (
         <>
-          <Link className="text-color   lg:mb-0 mb-5 hover:bg-purple-200 lg:hover:scale-125 font-semibold lg:hover:bg-transparent rounded-2xl hover:text-white ">
+          <Link
+            to={"/post"}
+            className="text-color   lg:mb-0 mb-5 hover:bg-purple-200 lg:hover:scale-125 font-semibold lg:hover:bg-transparent rounded-2xl hover:text-white "
+          >
             Post
           </Link>
           <Link
@@ -48,7 +54,7 @@ function Nav() {
         } bg-white text-color shadow-sm`}
       >
         <div className="navbar  w-11/12 mx-auto ">
-          <div className="navbar-start">
+          <div className="navbar-start z-100">
             {/* drawer */}
             <div className="drawer lg:hidden">
               <input
@@ -152,7 +158,7 @@ function Nav() {
                   </div>
                   <ul
                     tabIndex={0}
-                    class="menu menu-sm text-center  dropdown-content bg-gray-50 rounded-box z-10 mt-3 mr-4  w-52 p-4 shadow-2xs "
+                    className="menu menu-sm text-center  dropdown-content bg-gray-50 rounded-box z-10 mt-3 mr-4  w-52 p-4 shadow-2xs "
                   >
                     <Link
                       to={"/profile"}

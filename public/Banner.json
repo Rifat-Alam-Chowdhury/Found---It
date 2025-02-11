@@ -1,0 +1,22 @@
+[
+  {
+    "name": "John's Store",
+    "item": "Wireless Headphones",
+    "img": "https://image.benq.com/is/image/benqco/4k-monitor-11-1?$ResponsivePreset$"
+  },
+  {
+    "name": "Tech World",
+    "item": "Gaming Mouse",
+    "img": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQTRen2XYJa6Hnz5CUl5PXEviZMPI1xFGIbJA&s"
+  },
+  {
+    "name": "Fashion Hub",
+    "item": "Leather Jacket",
+    "img": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTcVKuUb7BzubNUXaQ7Y7MeEG80MJXXjEthRA&s"
+  },
+  {
+    "name": "Book Haven",
+    "item": "Mystery Novel",
+    "img": "https://static.vecteezy.com/system/resources/thumbnails/049/855/274/small/nature-background-high-resolution-wallpaper-for-a-serene-and-stunning-view-photo.jpg"
+  }
+]

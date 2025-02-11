@@ -5,14 +5,14 @@ import Footer from "./components/Footer";
 function App() {
   return (
     <>
-      <main className="bg-red-400">
+      <main className="bg-gray-100">
         <section>
           <Nav />
-          <div className="w-11/12 mx-auto min-h-[calc(100vh-288px)] border-2">
+          <div className=" min-h-[calc(100vh-120px)] ">
             <Outlet />
           </div>
 
-          {/* <Footer /> */}
+          <Footer />
         </section>
       </main>
     </>

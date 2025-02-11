@@ -78,7 +78,7 @@ function Login() {
               onClick={handleRecruiterAutoFill}
               className="btn btn-xs w-7/12 mx-auto p-2 bg-black text-white rounded-xl"
             >
-              Only if you are a requiter click here
+              Only if you are a recruiter click here
             </button>
             <div className="card-body">
               <h2 className="card-title justify-center text-2xl mb-4">
