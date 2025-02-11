@@ -4,6 +4,8 @@ import "swiper/css";
 import { Autoplay, Pagination, Navigation } from "swiper/modules";
 import SpotlightCard from "../../components/SpotlightCard";
 import StarBorder from "../../components/StarBorder";
+import Community from "../../components/Community";
+import About from "../About/About";
 
 function Home() {
   const progressCircle = useRef(null);
@@ -44,7 +46,7 @@ function Home() {
     <>
       <div className="  bg-transparent    w-11/12  mx-auto">
         {/* banner */}
-        <div className="">
+        <div className="mt-5">
           <h1 className="text-xl ml-6 font-bold mb-1 text-color">
             Top Priority
           </h1>
@@ -206,8 +208,25 @@ function Home() {
          *****************************************************************
          *********************************************************************/}
         {/* Community Heroes */}
-        <section></section>
+        <section className="text-color   mt-4">
+          <div className=" p-2 rounded-md bg-white">
+            <Community />
+          </div>
+        </section>
         {/* Community Heroes */}
+        {/* ***************************************************************
+         *******************************************************************
+         *****************************************************************
+         *********************************************************************/}
+        {/* ***************************************************************
+         *******************************************************************
+         *****************************************************************
+         *********************************************************************/}
+        {/* About us */}
+        <section className="text-color   mt-4">
+          <About />
+        </section>
+        {/* About us */}
         {/* ***************************************************************
          *******************************************************************
          *****************************************************************
