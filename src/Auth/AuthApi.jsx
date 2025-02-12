@@ -9,6 +9,7 @@ import {
   updateProfile,
 } from "firebase/auth";
 import { auth } from "./FirebaseAuth";
+import axios from "axios";
 
 export const AUthfirebase = createContext();
 
@@ -27,7 +28,7 @@ function AuthApi({ children }) {
       );
       await updateProfile(userCredential.user, {
         displayName: name,
-        photoURL: photoURL || "https://example.com/default-avatar.jpg",
+        photoURL: photoURL,
       });
       return userCredential.user;
     } catch (error) {
@@ -52,21 +53,41 @@ function AuthApi({ children }) {
   };
 
   useEffect(() => {
-    let isMounted = true; // To prevent state updates on unmounted component
+    const unsubscribe = onAuthStateChanged(auth, async (currentUser) => {
+      setUser(currentUser);
+      console.log(currentUser);
 
-    const unsubscribe = onAuthStateChanged(auth, (currentUser) => {
-      if (isMounted) {
-        console.log(currentUser);
-        setUser(currentUser);
-        setIsLoading(false); // Always set loading to false after check
+      if (currentUser) {
+        setIsLoading(false);
+      } else {
+        setIsLoading(false);
       }
     });
-
     return () => {
-      isMounted = false;
-      unsubscribe();
+      return unsubscribe();
     };
   }, []);
+
+  useEffect(() => {
+    const updateUser = async () => {
+      try {
+        const response = await axios.post(
+          `${import.meta.env.VITE_URL}update-user-api`,
+          {
+            email: user?.email,
+            displayName: user?.displayName,
+            photoURL: user?.photoURL,
+          }
+        );
+      } catch (error) {
+        console.error("Error updating user:", error);
+      }
+    };
+
+    if (user) {
+      updateUser();
+    }
+  }, [user]);
 
   const values = {
     CreateUser,

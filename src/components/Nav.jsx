@@ -4,7 +4,6 @@ import { AUthfirebase } from "../Auth/AuthApi";
 
 function Nav() {
   const { user, SignOutUser, isloading } = useContext(AUthfirebase);
-  console.log(user);
 
   const routes = (
     <>

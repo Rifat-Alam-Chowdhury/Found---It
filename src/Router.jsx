@@ -11,6 +11,8 @@ import Private from "./pages/Private";
 import EditProfile from "./pages/Edit/EditProfile";
 import Mypost from "./pages/Mypost/Mypost";
 import CreatePost from "./pages/CreatePost/CreatePost";
+import Iteamdetails from "./pages/Iteam details/Iteamdetails";
+import ItemModal from "./components/ItemModal";
 
 const router = createBrowserRouter([
   {
@@ -24,6 +26,15 @@ const router = createBrowserRouter([
         element: (
           <Private>
             <Post />
+          </Private>
+        ),
+      },
+      {
+        path: "/Iteamdetails/:id",
+        element: (
+          <Private>
+            <Iteamdetails />
+            <ItemModal />
           </Private>
         ),
       },

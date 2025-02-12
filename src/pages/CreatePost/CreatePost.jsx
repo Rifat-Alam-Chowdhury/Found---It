@@ -1,12 +1,16 @@
-import React, { useEffect, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import toast, { Toaster } from "react-hot-toast";
 import { FiCamera, FiMapPin, FiCalendar, FiTag } from "react-icons/fi";
+import { AUthfirebase } from "../../Auth/AuthApi";
+import axios from "axios";
 
 function CreatePost() {
+  const { user } = useContext(AUthfirebase);
   const [selectedFile, setSelectedFile] = useState(null);
   const [isDragActive, setIsDragActive] = useState(false);
   const [categories, setCategories] = useState([]);
   const [formData, setFormData] = useState({
+    user: user?.displayName,
     postType: "Lost Item",
     title: "",
     category: "",
@@ -14,7 +18,7 @@ function CreatePost() {
     date: "",
     time: "",
     description: "",
-    images: [], // This will hold file(s) to be uploaded
+    images: [],
   });
   const [loading, setLoading] = useState(false);
 
@@ -25,7 +29,6 @@ function CreatePost() {
       .catch((error) => console.error("Error fetching categories:", error));
   }, []);
 
-  // Update text-based fields
   const handleChange = (e) => {
     setFormData({
       ...formData,
@@ -44,7 +47,7 @@ function CreatePost() {
     }
   };
 
-  // Submit form and upload images if present
+  // Submit form
   const handleSubmit = async (e) => {
     e.preventDefault();
     setLoading(true);
@@ -93,16 +96,23 @@ function CreatePost() {
       };
 
       const imageUrls = await uploadImages();
-      setFormData((prev) => ({ ...prev, images: imageUrls }));
+      if (imageUrls) {
+        console.log(formData, imageUrls);
+
+        setFormData((prev) => ({ ...prev, images: imageUrls }));
+        const post = await axios.post(
+          `${import.meta.env.VITE_URL}create-Post-api`,
+          {
+            formData: formData,
+            img: imageUrls,
+          }
+        );
+      }
     } catch (error) {
       setLoading(false);
       toast.error("Submission failed:", error);
     } finally {
       setLoading(false);
-      toast.success("Posted Successfully", {
-        autoClose: false, // Stays indefinitely until the user closes it
-        closeOnClick: true, // Allows clicking to close
-      });
     }
   };
 
@@ -259,24 +269,7 @@ function CreatePost() {
                 <span className="label-text">Upload Image</span>
               </label>
 
-              <div
-                className={`border-2 border-dashed rounded-lg p-6 text-center transition-colors ${
-                  isDragActive
-                    ? "border-purple-500 bg-purple-50"
-                    : "border-base-300 hover:border-purple-300"
-                }`}
-                onDragOver={(e) => {
-                  e.preventDefault();
-                  setIsDragActive(true);
-                }}
-                onDragLeave={() => setIsDragActive(false)}
-                onDrop={(e) => {
-                  e.preventDefault();
-                  setIsDragActive(false);
-                  const file = e.dataTransfer.files[0];
-                  handleFileSelection(file);
-                }}
-              >
+              <div className="border-2 border-dashed border-purple-100 rounded-lg p-6 text-center hover:border-purple-200 transition cursor-pointer min-h-[200px] flex items-center justify-center">
                 <input
                   type="file"
                   className="hidden"
@@ -288,56 +281,34 @@ function CreatePost() {
                   }}
                 />
 
-                <div className="flex flex-col items-center justify-center gap-3">
-                  <svg
-                    xmlns="http://www.w3.org/2000/svg"
-                    className="w-12 h-12 text-purple-500"
-                    fill="none"
-                    viewBox="0 0 24 24"
-                    stroke="currentColor"
-                  >
-                    <path
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                      strokeWidth="2"
-                      d="M7 16a4 4 0 01-.88-7.903A5 5 0 1115.9 6L16 6a5 5 0 011 9.9M15 13l-3-3m0 0l-3 3m3-3v12"
-                    />
-                  </svg>
-
-                  <div className="space-y-1">
-                    <p className="font-medium">
-                      {selectedFile
-                        ? selectedFile.name
-                        : "Drag and drop your photo here"}
-                    </p>
-                    <p className="text-sm text-gray-500">
-                      {selectedFile
-                        ? "Click to change photo"
-                        : "or click to browse (JPEG, PNG, WEBP)"}
-                    </p>
-                  </div>
-
+                <div className="flex flex-col items-center justify-center gap-3 w-full">
                   <button
                     type="button"
-                    className="btn btn-sm btn-outline border-purple-500 text-purple-500 hover:bg-purple-500 hover:text-white"
-                    onClick={() => {
-                      const fileInput = document.getElementById("file-upload");
-                      if (fileInput) fileInput.click();
-                    }}
+                    className="btn btn-outline border-purple-500 text-purple-500 hover:bg-purple-500 hover:text-white lg:px-4 lg:py-2"
+                    onClick={() =>
+                      document.getElementById("file-upload").click()
+                    }
                   >
+                    <FiCamera className="mr-2 text-lg" />
                     Choose File
                   </button>
-                </div>
 
-                {selectedFile && (
-                  <div className="mt-4 ">
-                    <img
-                      src={URL.createObjectURL(selectedFile)}
-                      alt="Preview"
-                      className="border-2  w-30 h-30 mx-auto rounded-full border-purple-200"
-                    />
-                  </div>
-                )}
+                  <p className="text-sm text-gray-500 mt-2 lg:text-base">
+                    {selectedFile
+                      ? selectedFile.name
+                      : "Supported formats: JPEG, PNG, WEBP"}
+                  </p>
+
+                  {selectedFile && (
+                    <div className="mt-4 w-full flex justify-center">
+                      <img
+                        src={URL.createObjectURL(selectedFile)}
+                        alt="Preview"
+                        className="w-32 h-32 lg:w-48 lg:h-48 object-cover rounded-lg border-2 border-purple-200"
+                      />
+                    </div>
+                  )}
+                </div>
               </div>
             </div>
 
